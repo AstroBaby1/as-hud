@@ -1,0 +1,191 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+#ui-container {
+  position: absolute;
+  bottom: 64px;
+  left: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  display: none;
+}
+.box {
+  width: 35px;
+  height: 35px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 4px;
+
+
+ box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+ animation: breathe 3s infinite alternate;
+}
+
+ @keyframes breathe {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); 
+  }
+} 
+
+.icon {
+  color: white;
+  font-size: 20px;
+  z-index: 1; 
+  opacity: 0.8;
+}
+
+.fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  transition: height 0.5s;
+  height: 0%;
+  background-color: rgba(255, 255, 255, 0.05); 
+  border-radius: 4px;
+}
+
+#thirst-box .fill {
+  background-color: #438699; 
+}
+
+#health-box .fill {
+  background-color: #4fa165; 
+}
+
+#hunger-box .fill {
+  background-color: #ac7e36;
+}
+#armor-box .fill {
+  background-color: #939394;
+}
+
+
+/* Add speedometer styles */
+.speedometer {
+  font-family: "Roboto", sans-serif;
+  font-size: 36px; 
+  font-weight: bold;
+  margin-bottom: 20px; 
+  text-align: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex; 
+  align-items: flex-end;
+}
+
+.speedometer-text {
+  color: white;
+  margin-right: 10px;
+  font-size: 50px;
+  margin-top: 90px;
+  margin-bottom: -20px;
+
+}
+
+.speedometer-unit {
+  color: white;
+  font-size: 9px;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  margin-left: 120px;
+}
+
+.fuel-info {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-190%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  background-color: rgba(255, 255, 255);
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.fuel-icon-value {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 8px;
+}
+
+.fuel-icon {
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.fuel-icon i {
+  color: rgb(0, 0, 0);
+}
+
+.fuel-value {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: rgb(0, 0, 0);
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.fuel-unit {
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+  color: rgb(0, 0, 0);
+}
+
+.sound-icon {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  font-size: 18px;
+  color: #fff;
+  transition: color 0.5s, box-shadow 0.5s;
+  display: none;
+}
+
+.sound-icon.glowing {
+  animation: glowing 1s infinite;
+}
+
+@keyframes glowing {
+  0% {
+    box-shadow: 0 0 5px 0px rgba(255, 255, 255, 0.8);
+    color: #fff;
+  }
+  50% {
+    box-shadow: 0 0 20px 10px rgba(255, 255, 255, 0.8);
+    color: #fff;
+  }
+  100% {
+    box-shadow: 0 0 5px 0px rgba(255, 255, 255, 0.8);
+    color: #fff;
+  }
+}
+ 
+.speedometer, .fuel-info {
+display: none;
+}
