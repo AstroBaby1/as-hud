@@ -1,54 +1,18 @@
-function doesResourceExist(resourceName)
-    return GetResourceState(resourceName) ~= "missing"
-end
-
-if doesResourceExist("es_extended") then
-    ESX = exports["es_extended"]:getSharedObject()
-    useESX = true
-elseif doesResourceExist("qb-core") then
-    local QBCore = exports['qb-core']:GetCoreObject()
-    useQBCore = true
-else
-    print("No Core Found!")
-end
-
+local QBCore = exports['qb-core']:GetCoreObject()
 local Loaded = false
 
-if useESX then
-    RegisterNetEvent('esx:playerLoaded')
-    AddEventHandler('esx:playerLoaded',function()
-        print("Hud Loaded")
-        ESX.ShowNotification("Hud loaded")
-        Loaded = true
-        print("Loaded")
-    end)
-
-    RegisterNetEvent('esx:playerLoaded')
-    AddEventHandler('esx:playerLoaded',function()
-        print("Hud Loaded")
-        Loaded = true
-    end)
-
-    RegisterNetEvent('esx:onPlayerLogout', function()
-        Loaded = false
-    end)
-
-elseif useQBCore then
-    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-        print("Hud Loaded")
-        QBCore.Functions.Notify("Hud loaded", "success")
-        Loaded = true
-    end)
-
-    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-        print("Hud Loaded")
-        Loaded = true
-    end)
-    RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-        Loaded = false
-    end)
-end
-
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    print("Hud Loaded")
+    QBCore.Functions.Notify("Hud loaded", "success")
+    Loaded = true
+end)
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+    print("Hud Loaded")
+    Loaded = true
+end)
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    Loaded = false
+end)
 
 CreateThread(function()
     while true do
@@ -56,6 +20,7 @@ CreateThread(function()
         Wait(500)
     end
 end)
+
 
 CreateThread(function()
     local minimap = RequestScaleformMovie('minimap')
@@ -105,29 +70,17 @@ AddEventHandler('LoadMap', function()
     SetRadarBigmapEnabled(false, false)
 end)
 
+
 CreateThread(function()
     while true do
         Wait(0)
-        local thirst = 0
-        local hunger = 0
-        if useESX then
-            TriggerEvent('esx_status:getStatus', 'thirst', function(status)
-                if status then thirst = status.val / 10000 end
-            end)
-            TriggerEvent('esx_status:getStatus', 'hunger', function(status)
-                if status then hunger = status.val / 10000 end
-            end)
-        elseif useQBCore then
-            local thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
-            local hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
-        end
         if Loaded then
             DisplayRadar(1)
             local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
 
             if DoesEntityExist(vehicle) and GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
                 local speed = math.floor(GetEntitySpeed(vehicle) * 3.6)
-                local fuel = GetVehicleFuelLevel(vehicle)
+                local fuel = exports['LegacyFuel']:GetFuel(vehicle)
 
                 SendNUIMessage({
                     action = 'updateSpeedometer',
@@ -150,8 +103,9 @@ CreateThread(function()
 
             local player = PlayerPedId()
             local armor = GetPedArmour(player)
+            local thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
             local health = GetEntityHealth(player) - 100
-
+            local hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
             SendNUIMessage({
                 action = 'updateArmor',
                 armor = armor
