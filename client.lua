@@ -117,7 +117,7 @@ CreateThread(function()
             TriggerEvent('esx_status:getStatus', 'hunger', function(status)
                 if status then hunger = status.val / 10000 end
             end)
-        elseif useQBCore
+        elseif useQBCore then
             local thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
             local hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
         end
