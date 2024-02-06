@@ -1,13 +1,19 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 local Loaded = false
 
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    print("Hud Loaded")
-    QBCore.Functions.Notify("Hud loaded", "success")
+AddEventHandler('QBCore:Client:OnPlayerLoaded', function()  
+    lib.print.info("Hud Loaded")
+    lib.notify({
+        title = 'as-hud',
+        description = 'Hud loaded',
+        type = 'success'
+    })
     Loaded = true
 end)
+
+
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    print("Hud Loaded")
+    lib.print.info("Hud Loaded")
     Loaded = true
 end)
 RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
@@ -77,10 +83,10 @@ CreateThread(function()
         if Loaded then
             DisplayRadar(1)
             local vehicle = GetVehiclePedIsIn(PlayerPedId(), false)
-
+           
             if DoesEntityExist(vehicle) and GetPedInVehicleSeat(vehicle, -1) == PlayerPedId() then
                 local speed = math.floor(GetEntitySpeed(vehicle) * 3.6)
-                local fuel = exports['LegacyFuel']:GetFuel(vehicle)
+                local  fuel = GetVehicleFuelLevel(vehicle)
 
                 SendNUIMessage({
                     action = 'updateSpeedometer',
@@ -93,18 +99,18 @@ CreateThread(function()
                 })
             end
 
-            local playerId = PlayerId()
-            local isTalking = NetworkIsPlayerTalking(playerId)
+           
+            local isTalking = NetworkIsPlayerTalking(cache.ped)
 
             SendNUIMessage({
                 action = 'updateTalkingStatus',
                 isTalking = isTalking
             })
 
-            local player = PlayerPedId()
-            local armor = GetPedArmour(player)
+           
+            local armor = GetPedArmour(cache.ped)
             local thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
-            local health = GetEntityHealth(player) - 100
+            local health = GetEntityHealth(cache.ped) - 100
             local hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
             SendNUIMessage({
                 action = 'updateArmor',

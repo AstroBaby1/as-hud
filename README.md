@@ -5,7 +5,7 @@
 ## Description
 
 its a basic optimised hud for qbcore , it will be updated in the future , its just the first version :)
-Working For both of QBCore and ESX , Converted To Esx By : [ytBeKuhl](https://github.com/ytBeKuhl)
+Working For both of QBCore and ESX and with all fuel script , Converted To Esx By : [ytBeKuhl](https://github.com/ytBeKuhl)
 ## Features
 
 - **Customizable HUD:** The script provides a feature-rich HUD with real-time information about vehicle speed, fuel, armor, and player statistics.
@@ -22,7 +22,7 @@ Working For both of QBCore and ESX , Converted To Esx By : [ytBeKuhl](https://gi
 ## Dependencies
 
 - **qb-core**
-- **LegacyFuel**
+-  **ox_lib**
 
 ## Customization
 

@@ -11,6 +11,14 @@ client_scripts {
 	'client.lua'
 }
 
+shared_scripts {
+    '@ox_lib/init.lua',
+}
+
+
+
 files {
 	'web/*.*'
 }
+lua54 'yes'
+use_experimental_fxv2_oal 'yes'
