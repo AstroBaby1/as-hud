@@ -1,25 +1,66 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = nil
+local ESX = nil
+
+if Config.FrameWork == "QBCore" then
+    QBCore = exports['qb-core']:GetCoreObject()
+elseif Config.FrameWork == "ESX" then
+    ESX = exports["es_extended"]:getSharedObject()
+end
+
 local Loaded = false
 
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()  
-    lib.print.info("Hud Loaded")
-    lib.notify({
-        title = 'as-hud',
-        description = 'Hud loaded',
-        type = 'success'
-    })
+
+if Config.FrameWork == "ESX" then
+    RegisterNetEvent('esx:playerLoaded')
+    AddEventHandler('esx:playerLoaded',function()
+        lib.print.info("Hud Loaded")
+        lib.notify({
+            title = 'as-hud',
+            description = 'Hud loaded',
+            type = 'success'
+        })
     Loaded = true
-end)
+    end)
 
+    RegisterNetEvent('esx:onPlayerLogout', function()
+        Loaded = false
+    end)
 
-AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-    lib.print.info("Hud Loaded")
-    Loaded = true
-end)
-RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-    Loaded = false
-end)
+elseif Config.FrameWork == "QBCore" then
+    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+        lib.print.info("Hud Loaded")
+        lib.notify({
+            title = 'as-hud',
+            description = 'Hud loaded',
+            type = 'success'
+        })
+        Loaded = true
+    end)
 
+    RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+        Loaded = false
+    end)
+end
+RegisterCommand("tst", function()
+    print("ok")
+if Config.FrameWork == "QBCore" then
+    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+        lib.print.info("Hud Loaded")
+        lib.notify({
+            title = 'as-hud',
+            description = 'Hud loaded',
+            type = 'success'
+        })
+        Loaded = true
+    end)
+
+    RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+        Loaded = false
+    end)
+else 
+    print("nthng detected")
+end
+end)
 CreateThread(function()
     while true do
         SetRadarBigmapEnabled(false, false)
@@ -100,18 +141,30 @@ CreateThread(function()
             end
 
            
-            local isTalking = NetworkIsPlayerTalking(cache.ped)
+            local playerId = PlayerId()
+            local isTalking = NetworkIsPlayerTalking(playerId)
 
             SendNUIMessage({
                 action = 'updateTalkingStatus',
                 isTalking = isTalking
             })
 
-           
+            local thirst = nil
+            local hunger = nil
+            if Config.FrameWork == "ESX" then
+                TriggerEvent('esx_status:getStatus', 'thirst', function(status)
+                    if status then thirst = status.val / 10000 end
+                end)
+                TriggerEvent('esx_status:getStatus', 'hunger', function(status)
+                    if status then hunger = status.val / 10000 end
+                end)
+            elseif Config.FrameWork == "QBCore" then
+                thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
+                hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
+            end
+
             local armor = GetPedArmour(cache.ped)
-            local thirst = QBCore.Functions.GetPlayerData().metadata['thirst']
             local health = GetEntityHealth(cache.ped) - 100
-            local hunger = QBCore.Functions.GetPlayerData().metadata['hunger']
             SendNUIMessage({
                 action = 'updateArmor',
                 armor = armor
