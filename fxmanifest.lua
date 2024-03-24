@@ -7,12 +7,11 @@ version '1.0'
 
 ui_page 'web/ui.html'
 
-client_scripts {
-	'client.lua'
-}
+client_script 'client.lua'
 
 shared_scripts {
     '@ox_lib/init.lua',
+	'config.lua'
 }
 
 
