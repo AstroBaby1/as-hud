@@ -1,6 +1,6 @@
 # Astro HUD
 
-![Hud Screenshot](https://cdn.discordapp.com/attachments/1004398904533602385/1203745089520926750/image.png?ex=65d235f9&is=65bfc0f9&hm=2ca7987db17a80a26246cff70501100ee8062aa0e602fe85be650c96b442b087&)
+![Hud Screenshot](https://imgur.com/giqDiHN)
 
 ## Description
 
