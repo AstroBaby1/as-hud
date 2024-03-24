@@ -1,6 +1,6 @@
 # Astro HUD
 
-![Hud Screenshot](https://imgur.com/giqDiHN)
+![Hud Screenshot](https://i.imgur.com/giqDiHN.png)
 
 ## Description
 
