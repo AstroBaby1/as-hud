@@ -10,25 +10,24 @@ end
 local Loaded = false
 
 
-if Config.FrameWork == "ESX" then
+if Config.FrameWork == 'ESX' then
     RegisterNetEvent('esx:playerLoaded')
-    AddEventHandler('esx:playerLoaded',function()
-        lib.print.info("Hud Loaded")
+    AddEventHandler('esx:playerLoaded', function()
+        lib.print.info('Hud Loaded')
         lib.notify({
             title = 'as-hud',
             description = 'Hud loaded',
             type = 'success'
         })
-    Loaded = true
+        Loaded = true
     end)
 
     RegisterNetEvent('esx:onPlayerLogout', function()
         Loaded = false
     end)
-
-elseif Config.FrameWork == "QBCore" then
+elseif Config.FrameWork == 'QBCore' then
     AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-        lib.print.info("Hud Loaded")
+        lib.print.info('Hud Loaded')
         lib.notify({
             title = 'as-hud',
             description = 'Hud loaded',
@@ -40,26 +39,74 @@ elseif Config.FrameWork == "QBCore" then
     RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
         Loaded = false
     end)
-end
-RegisterCommand("tst", function()
-    print("ok")
-if Config.FrameWork == "QBCore" then
-    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
-        lib.print.info("Hud Loaded")
-        lib.notify({
-            title = 'as-hud',
-            description = 'Hud loaded',
-            type = 'success'
-        })
-        Loaded = true
+
+    AddEventHandler('onResourceStart', function(resourceName)
+        if (GetCurrentResourceName() == resourceName) then
+            lib.print.info('Hud Loaded')
+            lib.notify({
+                title = 'as-hud',
+                description = 'Hud loaded',
+                type = 'success'
+            })
+            Loaded = true
+        end
     end)
 
-    RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
-        Loaded = false
+    AddEventHandler('onResourceStop', function(resourceName)
+        if (GetCurrentResourceName() == resourceName) then
+            lib.print.info('Hud Unloaded')
+            lib.notify({
+                title = 'as-hud',
+                description = 'Hud Unloaded',
+                type = 'error'
+            })
+            Loaded = false
+        end
     end)
-else 
-    print("nthng detected")
 end
+RegisterCommand('tst', function()
+    print('ok')
+    if Config.FrameWork == 'QBCore' then
+        AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+            lib.print.info('Hud Loaded')
+            lib.notify({
+                title = 'as-hud',
+                description = 'Hud loaded',
+                type = 'success'
+            })
+            Loaded = true
+        end)
+
+        RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+            Loaded = false
+        end)
+
+        AddEventHandler('onResourceStart', function(resourceName)
+            if (GetCurrentResourceName() == resourceName) then
+                lib.print.info('Hud Loaded')
+                lib.notify({
+                    title = 'as-hud',
+                    description = 'Hud loaded',
+                    type = 'success'
+                })
+                Loaded = true
+            end
+        end)
+
+        AddEventHandler('onResourceStop', function(resourceName)
+            if (GetCurrentResourceName() == resourceName) then
+                lib.print.info('Hud Unloaded')
+                lib.notify({
+                    title = 'as-hud',
+                    description = 'Hud Unloaded',
+                    type = 'error'
+                })
+                Loaded = false
+            end
+        end)
+    else
+        print('nthng detected')
+    end
 end)
 CreateThread(function()
     while true do
